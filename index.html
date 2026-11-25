@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CastHub – Casting One-Stop Center</title>
+<meta name="description" content="CastHub: all JCY Casting QA apps in one place.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="JCY Casting">
+<meta property="og:title" content="CastHub – Casting One-Stop Center">
+<meta property="og:description" content="All JCY Casting apps in one place. Tap to open.">
+<meta property="og:url" content="https://casting-jcy.github.io/casthub/">
+<meta property="og:image" content="https://casting-jcy.github.io/casthub/logo256.png">
+<meta property="og:image:width" content="256">
+<meta property="og:image:height" content="256">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f2a5f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CastHub">
+<style>
+  :root {
+    --navy: #0f2a5f; --navy2: #17397a; --green: #178148; --bg: #eef2f7;
+    --card: #fff; --ink: #14213d; --muted: #5d6b82; --line: #dbe2ec;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; -webkit-tap-highlight-color: transparent; }
+  header { background: linear-gradient(160deg, var(--navy) 0%, var(--navy2) 100%); color: #fff; padding: calc(18px + env(safe-area-inset-top)) 16px 54px; }
+  .top { max-width: 960px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+  .top img { width: 48px; height: 48px; border-radius: 10px; background: #fff; }
+  .brand h1 { margin: 0; font-size: 24px; letter-spacing: .3px; }
+  .brand h1 b { color: #7fd6a3; }
+  .brand p { margin: 2px 0 0; color: #c8d7e6; font-size: 13px; }
+  .clock { margin-left: auto; text-align: right; font-size: 12px; color: #c8d7e6; line-height: 1.4; }
+  .clock strong { display: block; color: #fff; font-size: 18px; }
+  .shift { display: inline-block; margin-top: 3px; padding: 1px 8px; border-radius: 9px; font-weight: bold; font-size: 11px; }
+  .shift.day { background: #ffd24d; color: #4a3a00; }
+  .shift.night { background: #3a4f86; color: #fff; }
+
+  main { max-width: 960px; margin: -38px auto 0; padding: 0 12px 32px; }
+  .quick { background: var(--card); border-radius: 14px; box-shadow: 0 4px 16px rgba(15,42,95,.12); padding: 14px; display: grid; gap: 10px; }
+  .quick label { font-size: 12px; font-weight: bold; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  .row { display: flex; gap: 8px; }
+  .row input { flex: 1; min-width: 0; font-size: 17px; padding: 12px; border: 1.5px solid var(--line); border-radius: 10px; outline: none; text-transform: uppercase; }
+  .row input:focus { border-color: var(--navy2); }
+  .row button { font-size: 16px; font-weight: bold; padding: 0 18px; border: 0; border-radius: 10px; background: var(--green); color: #fff; cursor: pointer; }
+  .hint { font-size: 12px; color: var(--muted); min-height: 15px; }
+  .hint.err { color: #c0392b; }
+
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin: 24px 4px 10px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  @media (min-width: 640px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 900px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+  a.tile, div.tile { position: relative; display: flex; flex-direction: column; gap: 8px; background: var(--card); border-radius: 14px; padding: 14px; text-decoration: none; color: var(--ink); border: 1px solid var(--line); min-height: 128px; transition: transform .08s, box-shadow .15s; }
+  a.tile:hover { box-shadow: 0 6px 18px rgba(15,42,95,.14); }
+  a.tile:active { transform: scale(.97); }
+  .ico { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; color: #fff; }
+  .tile .name { font-weight: bold; font-size: 16px; line-height: 1.2; }
+  .tile .desc { font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+  .tile.soon { opacity: .55; border-style: dashed; }
+  .badge { position: absolute; top: 10px; right: 10px; font-size: 10px; font-weight: bold; padding: 2px 7px; border-radius: 8px; background: #e6ebf3; color: var(--muted); }
+  .badge.live { background: #dff3e7; color: var(--green); }
+
+  .flow { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .flow b { color: var(--ink); }
+  .flow .ok { color: var(--green); font-weight: bold; }
+  .flow .ng { color: #c0392b; font-weight: bold; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 26px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <img src="icon.png" alt="JCY">
+    <div class="brand">
+      <h1>Cast<b>Hub</b></h1>
+      <p>Casting One-Stop Center</p>
+    </div>
+    <div class="clock"><strong id="time">--:--</strong><span id="date"></span><br><span id="shift" class="shift"></span></div>
+  </div>
+</header>
+
+<main>
+  <div class="quick">
+    <label for="mc">Go to machine</label>
+    <div class="row">
+      <input id="mc" placeholder="e.g. F-12 or H5" autocomplete="off" inputmode="text" enterkeyhint="go">
+      <button id="mcGo" type="button">Open</button>
+    </div>
+    <div id="hint" class="hint">Opens that machine's status form on the dashboard.</div>
+  </div>
+
+  <div id="sections"></div>
+
+  <h2>QA flow</h2>
+  <div class="flow">
+    <b>QA sampling → Inspection</b> (Visual · EDI · CMM · Test Cut)<br>
+    <span class="ok">All OK</span> → part released<br>
+    <span class="ng">NG, reworkable</span> → <b>ROCF</b> (rework by deburring)<br>
+    <span class="ng">NG from mould</span> → <b>MRRF</b> (mould down until closed)<br>
+    <span class="ng">Test Cut NG</span> → scrap
+  </div>
+
+  <footer>JCY Casting QA · CastHub</footer>
+</main>
+
+<script>
+// ---- Edit links here. status: 'live' or 'soon' ----
+var BASE = 'https://casting-jcy.github.io/';
+var SECTIONS = [
+  { title: 'Dashboard', apps: [
+    { name: 'Caster Status', desc: 'Machine & mould status, Block F & H', url: BASE + 'caster-status/', code: 'CS', color: '#0f2a5f', status: 'live' },
+    { name: 'Block H view', desc: 'Dashboard opened on Block H', url: BASE + 'caster-status/?block=H', code: 'H', color: '#17397a', status: 'live' },
+    { name: 'Daily Summary', desc: 'Summary report incl. offline rework', url: BASE + 'caster-status/?tab=reports&report=summary', code: 'Σ', color: '#2c5aa0', status: 'live' },
+    { name: 'Issues', desc: 'Open machine & quality issues', url: BASE + 'caster-status/?tab=issues', code: '!', color: '#d35400', status: 'live' }
+  ]},
+  { title: 'QA Inspection', apps: [
+    { name: 'Visual', desc: 'Visual inspection, mark defects on the part', url: BASE + 'visual/', code: 'V', color: '#178148', status: 'live' },
+    { name: 'EDI', desc: 'EDI inspection', url: '', code: 'E', color: '#7d3c98', status: 'soon' },
+    { name: 'CMM', desc: 'CMM results from machine reports', url: '', code: 'C', color: '#1f7a8c', status: 'soon' },
+    { name: 'Test Cut', desc: 'Porosity, unmill & dimension record', url: BASE + 'testcut/', code: 'T', color: '#b9770e', status: 'live' },
+    { name: 'Test Cut Dashboard', desc: 'Read-only results with NG photos', url: BASE + 'testcut/dashboard/', code: 'T', color: '#9a640c', status: 'live' }
+  ]},
+  { title: 'NG Follow-up', apps: [
+    { name: 'ROCF', desc: 'Rework Order Control Form (casting ↔ deburring)', url: BASE + 'rocf/', code: 'R', color: '#c0392b', status: 'live' },
+    { name: 'MRRF', desc: 'Mould Rectification Request Form', url: BASE + 'mrrf/', code: 'M', color: '#8e2a20', status: 'live' }
+  ]}
+];
+
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+var html = '';
+SECTIONS.forEach(function (sec) {
+  html += '<h2>' + esc(sec.title) + '</h2><div class="grid">';
+  sec.apps.forEach(function (a) {
+    var live = a.status === 'live' && a.url;
+    var inner = '<span class="badge' + (live ? ' live' : '') + '">' + (live ? 'LIVE' : 'SOON') + '</span>' +
+      '<span class="ico" style="background:' + a.color + '">' + esc(a.code) + '</span>' +
+      '<span class="name">' + esc(a.name) + '</span><span class="desc">' + esc(a.desc) + '</span>';
+    html += live ? '<a class="tile" href="' + esc(a.url) + '">' + inner + '</a>' : '<div class="tile soon">' + inner + '</div>';
+  });
+  html += '</div>';
+});
+document.getElementById('sections').innerHTML = html;
+
+// ---- Clock + shift (Asia/Kuala_Lumpur; DAY 08:00, NIGHT 20:00) ----
+function tick() {
+  var now = new Date();
+  var tz = 'Asia/Kuala_Lumpur';
+  var hm = now.toLocaleTimeString('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false });
+  var d = now.toLocaleDateString('en-GB', { timeZone: tz, weekday: 'short', day: '2-digit', month: 'short' });
+  var h = parseInt(hm.slice(0, 2), 10);
+  var day = h >= 8 && h < 20;
+  document.getElementById('time').textContent = hm;
+  document.getElementById('date').textContent = d;
+  var s = document.getElementById('shift');
+  s.textContent = day ? 'DAY SHIFT' : 'NIGHT SHIFT';
+  s.className = 'shift ' + (day ? 'day' : 'night');
+}
+tick(); setInterval(tick, 15000);
+
+// ---- Machine quick jump: F-01..F-47, H-01..H-29 (no H-24) ----
+function machineId(raw) {
+  var m = String(raw).toUpperCase().replace(/\s+/g, '').match(/^([FH])-?(\d{1,2})$/);
+  if (!m) return null;
+  var n = parseInt(m[2], 10), b = m[1];
+  if (n < 1 || (b === 'F' && n > 47) || (b === 'H' && (n > 29 || n === 24))) return null;
+  return b + '-' + (n < 10 ? '0' : '') + n;
+}
+function goMachine() {
+  var hint = document.getElementById('hint');
+  var id = machineId(document.getElementById('mc').value);
+  if (!id) { hint.textContent = 'Use F-01…F-47 or H-01…H-29 (no H-24).'; hint.className = 'hint err'; return; }
+  location.href = BASE + 'caster-status/?m=' + id;
+}
+document.getElementById('mcGo').onclick = goMachine;
+document.getElementById('mc').addEventListener('keydown', function (e) { if (e.key === 'Enter') goMachine(); });
+</script>
+</body>
+</html>
